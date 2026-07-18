@@ -40,6 +40,9 @@ def build_expected_function(context_key: str) -> Callable[[str, dict[str, Any]],
         """
         ret: list[Any] = []
         for search in context.get(context_key) or ():
+            # Empty search matches every offset and loops forever in find_all.
+            if not search:
+                continue
             if search.startswith("re:"):
                 search = search[3:]
                 search = search.replace(" ", "-")

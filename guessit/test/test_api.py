@@ -65,6 +65,24 @@ def test_forced_unicode_japanese_options() -> None:
     assert ret["title"] == "阿维达"
 
 
+def test_expected_title_empty_string() -> None:
+    ret = guessit("Some.Movie.2019.mkv", options={"expected_title": [""]})
+    assert ret["title"] == "Some Movie"
+    assert ret["year"] == 2019
+
+
+def test_expected_group_empty_string() -> None:
+    ret = guessit("Some.Movie.2019-GROUP.mkv", options={"expected_group": [""]})
+    assert ret["title"] == "Some Movie"
+    assert ret["year"] == 2019
+
+
+def test_expected_title_empty_among_titles() -> None:
+    ret = guessit("Some.Movie.2019.mkv", options={"expected_title": ["Other", ""]})
+    assert ret["title"] == "Some Movie"
+    assert ret["year"] == 2019
+
+
 def test_properties() -> None:
     props = properties()
     assert "video_codec" in props
